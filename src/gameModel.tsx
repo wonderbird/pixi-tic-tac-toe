@@ -33,6 +33,16 @@ export class GameModel {
   private updateObservers() {
     this.observers.forEach(listener => listener(this));
   }
+
+  isGameOver() {
+    for (let row = 0; row < 3; row++) {
+      if (this.board[row][0] !== '' && this.board[row][0] === this.board[row][1] && this.board[row][1] === this.board[row][2]) {
+        return true;
+      }
+    }
+    
+    return false;
+  }
 }
 
 export default GameModel;

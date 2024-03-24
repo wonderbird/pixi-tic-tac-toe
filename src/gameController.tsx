@@ -8,6 +8,10 @@ class GameController {
   }
 
   tapSquare(row: number, column: number) {
+    if (this.model.isGameOver()) {
+      return;
+    }
+
     this.model.placeSymbol(row, column);
   }
 }

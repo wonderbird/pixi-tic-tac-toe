@@ -10,7 +10,8 @@ async function createScene(app: PIXI.Application) {
     const boxTexture = app.renderer.generateTexture(boxGraphics);
 
     const circleGraphics = new PIXI.Graphics();
-    circleGraphics.circle(0, 0, (boxWidth - 10) / 2);
+    const radius = (Math.min(boxWidth, boxHeight) - 10) / 2;
+    circleGraphics.circle(0, 0, radius);
     circleGraphics.stroke({ width: 3, color: 'blue' });
     const circleTexture = app.renderer.generateTexture(circleGraphics);
 

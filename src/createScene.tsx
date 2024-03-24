@@ -15,6 +15,14 @@ async function createScene(app: PIXI.Application) {
     circleGraphics.stroke({ width: 3, color: 'blue' });
     const circleTexture = app.renderer.generateTexture(circleGraphics);
 
+    const crossGraphics = new PIXI.Graphics();
+    crossGraphics.moveTo(-radius, -radius);
+    crossGraphics.lineTo(radius, radius);
+    crossGraphics.moveTo(-radius, radius);
+    crossGraphics.lineTo(radius, -radius);
+    crossGraphics.stroke({ width: 3, color: 'red' });
+    const crossTexture = app.renderer.generateTexture(crossGraphics);
+
     for (let row = 0; row < 3; row++) {
         for (let column = 0; column < 3; column++) {
             const boxSprite = PIXI.Sprite.from(boxTexture);
@@ -23,8 +31,13 @@ async function createScene(app: PIXI.Application) {
 
             boxSprite.eventMode = 'static';
             boxSprite.cursor = 'pointer';
+
+            const textures = [boxTexture, circleTexture, crossTexture];
+            let textureIndex = 0;
+
             boxSprite.on('pointerdown', () => {
-                boxSprite.texture = circleTexture;
+                textureIndex = (textureIndex + 1) % textures.length;
+                boxSprite.texture = textures[textureIndex];
             });
 
             app.stage.addChild(boxSprite);

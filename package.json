@@ -1,5 +1,5 @@
 {
-  "name": "experiment-with-pixijs-react",
+  "name": "pixi-tic-tac-toe",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

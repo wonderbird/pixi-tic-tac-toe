@@ -5,7 +5,7 @@ import createScene from "./createScene";
 
 function App() {
   const app = new PIXI.Application();
-  app.init({background: "#1099bb", resizeTo: window, hello: true})
+  app.init({background: "black", resizeTo: window, hello: true})
     .then(async () => {
       const appContainer = document.body.querySelector('#root .App');
       if (typeof appContainer === 'undefined' || appContainer === null) {

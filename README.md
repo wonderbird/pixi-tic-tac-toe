@@ -1,8 +1,6 @@
-# Experiment with the PixiJS Creation Engine (TypeScript and React)
+# Tic Tac Toe with PixiJS
 
-This project shows basic steps with [PixiJS](https://pixijs.com/) in TypeScript and React.
-
-See also: [experiment-with-pixijs](https://github.com/wonderbird/experiment-with-pixijs)
+Learn how to create a simple Tic Tac Toe game with PixiJS and React.
 
 ## Thanks
 

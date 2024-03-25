@@ -39,15 +39,24 @@ class BoardView {
     this.crossTexture = app.renderer.generateTexture(crossGraphics);
 
     const fill = new PIXI.FillGradient(0, 0, 0, 36 * 1.7 * 7);
+    const colors = [0xffffff, 0x00ff99].map((color) => PIXI.Color.shared.setValue(color).toNumber());
+
+    colors.forEach((number, index) =>
+    {
+      const ratio = index / colors.length;
+
+      fill.addColorStop(ratio, number);
+    });
+
     const style = new PIXI.TextStyle({
       fontFamily: 'Arial',
       fontSize: 36,
       fontStyle: 'italic',
       fontWeight: 'bold',
       fill: { fill },
-      stroke: { color: '#ffffff', width: 5, join: 'round' },
+      stroke: { color: '#000000', width: 3, join: 'round' },
       dropShadow: {
-        color: '#cccccc',
+        color: '#555555',
         blur: 4,
         angle: Math.PI / 6,
         distance: 6,

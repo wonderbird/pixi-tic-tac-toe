@@ -3,40 +3,49 @@ import GameModel from "./gameModel";
 import GameController from "./gameController";
 
 class BoardView {
-  private readonly boxTexture: PIXI.Texture;
-  private readonly circleTexture: PIXI.Texture;
-  private readonly crossTexture: PIXI.Texture;
+  private boxTexture: PIXI.Texture = PIXI.Texture.EMPTY;
+  private circleTexture: PIXI.Texture = PIXI.Texture.EMPTY;
+  private circleScale: number = 1.0;
+
+  private crossTexture: PIXI.Texture = PIXI.Texture.EMPTY;
+  private crossScale: number = 1.0;
 
   private board: PIXI.Sprite[][] = [];
 
-  private gameOverSprite: PIXI.Text;
-
+  private gameOverSprite: PIXI.Text = new PIXI.Text();
   private app: PIXI.Application;
+  private model: GameModel;
+  private controller: GameController;
 
   constructor(app: PIXI.Application, model: GameModel, controller: GameController) {
     this.app = app;
+    this.model = model;
+    this.controller = controller;
+  }
 
-    const boxHeight = app.canvas.height / 3;
-    const boxWidth = app.canvas.width / 3;
+  public async setup() {
+    const boxHeight = this.app.canvas.height / 3;
+    const boxWidth = this.app.canvas.width / 3;
+
+    const padding = Math.min(boxHeight, boxWidth) / 3;
+    const paddedBoxWidth = boxWidth - padding;
+    const paddedBoxHeight = boxHeight - padding;
 
     const boxGraphics = new PIXI.Graphics();
     boxGraphics.rect(0, 0, boxWidth, boxHeight);
     boxGraphics.stroke({ width: 3, color: 'white' });
-    this.boxTexture = app.renderer.generateTexture(boxGraphics);
+    this.boxTexture = this.app.renderer.generateTexture(boxGraphics);
 
-    const circleGraphics = new PIXI.Graphics();
-    const radius = (Math.min(boxWidth, boxHeight) - 10) / 2;
-    circleGraphics.circle(0, 0, radius);
-    circleGraphics.stroke({ width: 3, color: 'blue' });
-    this.circleTexture = app.renderer.generateTexture(circleGraphics);
+    this.circleTexture = await PIXI.Assets.load('bunny.png');
+    const circleScaleWidth = paddedBoxWidth / this.circleTexture.width;
+    const circleScaleHeight = paddedBoxHeight / this.circleTexture.height;
+    this.circleScale = Math.min(circleScaleWidth, circleScaleHeight);
 
-    const crossGraphics = new PIXI.Graphics();
-    crossGraphics.moveTo(-radius, -radius);
-    crossGraphics.lineTo(radius, radius);
-    crossGraphics.moveTo(-radius, radius);
-    crossGraphics.lineTo(radius, -radius);
-    crossGraphics.stroke({ width: 3, color: 'red' });
-    this.crossTexture = app.renderer.generateTexture(crossGraphics);
+    this.crossTexture = await PIXI.Assets.load('elk.png');
+    const crossScaleWidth = paddedBoxWidth / this.circleTexture.width;
+    const crossScaleHeight = paddedBoxHeight / this.circleTexture.height;
+    this.crossScale = Math.min(crossScaleWidth, crossScaleHeight);
+
 
     const fill = new PIXI.FillGradient(0, 0, 0, 36 * 1.7 * 7);
     const colors = [0xffffff, 0x00ff99].map((color) => PIXI.Color.shared.setValue(color).toNumber());
@@ -67,7 +76,7 @@ class BoardView {
 
     this.gameOverSprite = new PIXI.Text({ text: 'Game Over', style });
     this.gameOverSprite.anchor.set(0.5);
-    this.gameOverSprite.position.set(app.canvas.width / 2, app.canvas.height / 2);
+    this.gameOverSprite.position.set(this.app.canvas.width / 2, this.app.canvas.height / 2);
 
     for (let row = 0; row < 3; row++) {
       this.board[row] = [];
@@ -82,14 +91,14 @@ class BoardView {
         square.cursor = 'pointer';
 
         square.on('pointerdown', () => {
-          controller.tapSquare(row, column);
+          this.controller.tapSquare(row, column);
         });
 
-        app.stage.addChild(square);
+        this.app.stage.addChild(square);
       }
     }
 
-    model.subscribe((model: GameModel) => this.update(this, model));
+    this.model.subscribe((model: GameModel) => this.update(this, model));
   }
 
   private update(self: BoardView, model: GameModel) {
@@ -103,9 +112,11 @@ class BoardView {
         switch (symbol) {
           case 'X':
             self.board[row][column].texture = this.crossTexture;
+            self.board[row][column].setSize(this.crossTexture.width * this.crossScale, this.crossTexture.height * this.crossScale);
             break;
           case 'O':
             self.board[row][column].texture = this.circleTexture;
+            self.board[row][column].setSize(this.circleTexture.width * this.circleScale, this.circleTexture.height * this.circleScale);
             break;
           default:
             self.board[row][column].texture = this.boxTexture;

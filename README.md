@@ -4,10 +4,13 @@ Learn how to create a simple Tic Tac Toe game with PixiJS and React.
 
 Check out the [live demo](https://https://pixi-tic-tac-toe.vercel.app/).
 
-## Thanks
+## Acknowledgements
 
-Many thanks to [JetBrains](https://www.jetbrains.com/?from=experiment-with-pixijs) who provide an [Open Source License](https://www.jetbrains.com/community/opensource/) for this project ❤️.
-Many thanks to Vercel who provide a [free hosting](https://vercel.com/) for this project ❤️.
+Many thanks ❤️ go to
+
+- [JetBrains](https://www.jetbrains.com/?from=experiment-with-pixijs) who provide an [Open Source License](https://www.jetbrains.com/community/opensource/) for this project
+- Vercel who provide a [free hosting](https://vercel.com/) for this project
+- Paul Sherman who provides the cliparts used as the player symbols [Bunny Cartoon 4](https://www.wpclipart.com/animals/R/rabbit/bunny_cartoon_4.png.html) and [Cartoon Elk](https://www.wpclipart.com/animals/E/cartoon_elk.png.html) and many others
 
 ## Developer Guide
 

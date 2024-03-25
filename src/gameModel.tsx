@@ -16,6 +16,10 @@ export class GameModel {
   }
 
   placeSymbol(row: number, column: number) {
+    if (this.board[row][column] !== '') {
+      return;
+    }
+
     this.board[row][column] = this.symbols[this.currentSymbol];
     this.currentSymbol = (this.currentSymbol + 1) % 2;
 

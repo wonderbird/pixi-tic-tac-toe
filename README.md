@@ -2,7 +2,7 @@
 
 Learn how to create a simple Tic Tac Toe game with PixiJS and React.
 
-Check out the [live demo](https://https://pixi-tic-tac-toe.vercel.app/).
+Check out the [live demo](https://pixi-tic-tac-toe.vercel.app/).
 
 ## Acknowledgements
 

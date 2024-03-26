@@ -1,7 +1,7 @@
 import * as PIXI from 'pixi.js';
-import GameController from "./gameController";
-import BoardView from "./boardView";
-import GameModel from "./gameModel";
+import GameController from "./GameController";
+import BoardView from "./BoardView";
+import GameModel from "./GameModel";
 
 async function createScene(app: PIXI.Application) {
     const model = new GameModel();

@@ -1,4 +1,4 @@
-import GameModel from "./gameModel";
+import GameModel from "./GameModel";
 
 class GameController {
   private model: GameModel;

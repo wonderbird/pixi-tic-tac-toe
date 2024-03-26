@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js';
-import GameModel from "./gameModel";
-import GameController from "./gameController";
+import GameModel from "./GameModel";
+import GameController from "./GameController";
 
 class BoardView {
   private boxTexture: PIXI.Texture = PIXI.Texture.EMPTY;

@@ -1,7 +1,7 @@
 import * as PIXI from 'pixi.js';
 import React from 'react';
 import './App.css';
-import createScene from "./createScene";
+import createScene from "./game/createScene";
 
 function App() {
   const app = new PIXI.Application();

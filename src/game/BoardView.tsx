@@ -23,7 +23,7 @@ class BoardView {
     this.controller = controller;
   }
 
-  public async setup() {
+  public async init() {
     const boxHeight = this.app.canvas.height / 3;
     const boxWidth = this.app.canvas.width / 3;
 

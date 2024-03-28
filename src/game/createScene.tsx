@@ -8,7 +8,7 @@ async function createScene(app: PIXI.Application) {
     const controller = new GameController(model);
     const boardView = new BoardView(app, model, controller);
 
-    await boardView.setup();
+    await boardView.init();
 }
 
 export default createScene;

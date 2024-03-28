@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js';
 import GameModel from "./GameModel";
-import GameController from "./GameController";
+import Presenter from "./Presenter";
 
 class BoardView {
   private boxTexture: PIXI.Texture = PIXI.Texture.EMPTY;
@@ -15,9 +15,9 @@ class BoardView {
   private gameOverSprite: PIXI.Text = new PIXI.Text();
   private app: PIXI.Application;
   private model: GameModel;
-  private controller: GameController;
+  private controller: Presenter;
 
-  constructor(app: PIXI.Application, model: GameModel, controller: GameController) {
+  constructor(app: PIXI.Application, model: GameModel, controller: Presenter) {
     this.app = app;
     this.model = model;
     this.controller = controller;

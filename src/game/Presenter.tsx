@@ -1,6 +1,6 @@
 import GameModel from "./GameModel";
 
-class GameController {
+class Presenter {
   private model: GameModel;
 
   constructor(model: GameModel) {
@@ -16,4 +16,4 @@ class GameController {
   }
 }
 
-export default GameController;
+export default Presenter;

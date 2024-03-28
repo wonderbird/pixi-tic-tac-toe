@@ -14,13 +14,11 @@ class BoardView {
 
   private gameOverSprite: PIXI.Text = new PIXI.Text();
   private app: PIXI.Application;
-  private model: GameModel;
   private presenter: Presenter;
 
-  constructor(app: PIXI.Application, model: GameModel) {
+  constructor(app: PIXI.Application) {
     this.app = app;
-    this.model = model;
-    this.presenter = new Presenter(model);
+    this.presenter = new Presenter(this);
   }
 
   public async init() {
@@ -97,13 +95,11 @@ class BoardView {
         this.app.stage.addChild(square);
       }
     }
-
-    this.model.subscribe((model: GameModel) => this.update(this, model));
   }
 
-  private update(self: BoardView, model: GameModel) {
+  public show(model: GameModel) {
     if (model.isGameOver()) {
-      this.app.stage.addChild(self.gameOverSprite);
+      this.app.stage.addChild(this.gameOverSprite);
     }
     for (let row = 0; row < 3; row++) {
       for (let column = 0; column < 3; column++) {
@@ -111,15 +107,15 @@ class BoardView {
 
         switch (symbol) {
           case 'X':
-            self.board[row][column].texture = this.crossTexture;
-            self.board[row][column].setSize(this.crossTexture.width * this.crossScale, this.crossTexture.height * this.crossScale);
+            this.board[row][column].texture = this.crossTexture;
+            this.board[row][column].setSize(this.crossTexture.width * this.crossScale, this.crossTexture.height * this.crossScale);
             break;
           case 'O':
-            self.board[row][column].texture = this.circleTexture;
-            self.board[row][column].setSize(this.circleTexture.width * this.circleScale, this.circleTexture.height * this.circleScale);
+            this.board[row][column].texture = this.circleTexture;
+            this.board[row][column].setSize(this.circleTexture.width * this.circleScale, this.circleTexture.height * this.circleScale);
             break;
           default:
-            self.board[row][column].texture = this.boxTexture;
+            this.board[row][column].texture = this.boxTexture;
             break;
         }
       }

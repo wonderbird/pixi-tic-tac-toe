@@ -1,10 +1,13 @@
 import GameModel from "./GameModel";
+import BoardView from "./BoardView";
 
 class Presenter {
-  private model: GameModel;
+  private readonly model: GameModel;
+  private view: BoardView;
 
-  constructor(model: GameModel) {
-    this.model = model;
+  constructor(view: BoardView) {
+    this.model = new GameModel();
+    this.view = view;
   }
 
   tapSquare(row: number, column: number) {
@@ -13,6 +16,8 @@ class Presenter {
     }
 
     this.model.placeSymbol(row, column);
+
+    this.view.show(this.model);
   }
 }
 

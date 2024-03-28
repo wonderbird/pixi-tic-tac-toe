@@ -5,8 +5,7 @@ import GameModel from "./GameModel";
 
 async function createScene(app: PIXI.Application) {
     const model = new GameModel();
-    const presenter = new Presenter(model);
-    const boardView = new BoardView(app, model, presenter);
+    const boardView = new BoardView(app, model);
 
     await boardView.init();
 }

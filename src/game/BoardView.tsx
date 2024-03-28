@@ -15,12 +15,12 @@ class BoardView {
   private gameOverSprite: PIXI.Text = new PIXI.Text();
   private app: PIXI.Application;
   private model: GameModel;
-  private controller: Presenter;
+  private presenter: Presenter;
 
-  constructor(app: PIXI.Application, model: GameModel, controller: Presenter) {
+  constructor(app: PIXI.Application, model: GameModel) {
     this.app = app;
     this.model = model;
-    this.controller = controller;
+    this.presenter = new Presenter(model);
   }
 
   public async init() {
@@ -91,7 +91,7 @@ class BoardView {
         square.cursor = 'pointer';
 
         square.on('pointerdown', () => {
-          this.controller.tapSquare(row, column);
+          this.presenter.tapSquare(row, column);
         });
 
         this.app.stage.addChild(square);

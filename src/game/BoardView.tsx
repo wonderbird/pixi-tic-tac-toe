@@ -1,5 +1,4 @@
 import * as PIXI from 'pixi.js';
-import GameModel from "./GameModel";
 import Presenter from "./Presenter";
 
 class BoardView {
@@ -97,28 +96,27 @@ class BoardView {
     }
   }
 
-  public show(model: GameModel) {
-    if (model.isGameOver()) {
+  public setGameOver(isGameOver: boolean) {
+    if (isGameOver) {
       this.app.stage.addChild(this.gameOverSprite);
+    } else {
+      this.app.stage.removeChild(this.gameOverSprite);
     }
-    for (let row = 0; row < 3; row++) {
-      for (let column = 0; column < 3; column++) {
-        const symbol = model.symbolAt(row, column);
+  }
 
-        switch (symbol) {
-          case 'X':
-            this.board[row][column].texture = this.crossTexture;
-            this.board[row][column].setSize(this.crossTexture.width * this.crossScale, this.crossTexture.height * this.crossScale);
-            break;
-          case 'O':
-            this.board[row][column].texture = this.circleTexture;
-            this.board[row][column].setSize(this.circleTexture.width * this.circleScale, this.circleTexture.height * this.circleScale);
-            break;
-          default:
-            this.board[row][column].texture = this.boxTexture;
-            break;
-        }
-      }
+  public setSymbolAt(symbol: string, row: number, column: number) {
+    switch (symbol) {
+      case 'X':
+        this.board[row][column].texture = this.crossTexture;
+        this.board[row][column].setSize(this.crossTexture.width * this.crossScale, this.crossTexture.height * this.crossScale);
+        break;
+      case 'O':
+        this.board[row][column].texture = this.circleTexture;
+        this.board[row][column].setSize(this.circleTexture.width * this.circleScale, this.circleTexture.height * this.circleScale);
+        break;
+      default:
+        this.board[row][column].texture = this.boxTexture;
+        break;
     }
   }
 }

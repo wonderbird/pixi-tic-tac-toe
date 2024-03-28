@@ -17,7 +17,14 @@ class Presenter {
 
     this.model.placeSymbol(row, column);
 
-    this.view.show(this.model);
+    this.view.setGameOver(this.model.isGameOver());
+
+    for (let row = 0; row < 3; row++) {
+      for (let column = 0; column < 3; column++) {
+        const symbol = this.model.symbolAt(row, column);
+        this.view.setSymbolAt(symbol, row, column);
+      }
+    }
   }
 }
 

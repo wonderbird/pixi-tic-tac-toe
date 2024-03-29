@@ -1,5 +1,6 @@
 import * as PIXI from 'pixi.js';
 import Presenter from "./Presenter";
+import PlayerSymbol from "./PlayerSymbol";
 
 class BoardView {
   private board: PIXI.Sprite[][] = [];
@@ -24,8 +25,8 @@ class BoardView {
 
   private async preloadAssets() {
     const assets = [
-      { alias: 'X', src: 'bunny.png' },
-      { alias: 'O', src: 'elk.png' },
+      { alias: PlayerSymbol.X, src: 'bunny.png' },
+      { alias: PlayerSymbol.O, src: 'elk.png' },
     ];
 
     await PIXI.Assets.load(assets);
@@ -113,8 +114,8 @@ class BoardView {
     }
   }
 
-  public setSymbolAt(symbol: string, row: number, column: number) {
-    if (symbol !== 'X' && symbol !== 'O') {
+  public setSymbolAt(symbol: PlayerSymbol, row: number, column: number) {
+    if (symbol === PlayerSymbol.BLANK) {
       this.board[row][column].texture = this.blankSquareTexture;
     } else {
       const texture = PIXI.Assets.get(symbol);

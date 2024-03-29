@@ -2,7 +2,7 @@ import * as PIXI from 'pixi.js';
 import Presenter from "./Presenter";
 
 class BoardView {
-  private boxTexture: PIXI.Texture = PIXI.Texture.EMPTY;
+  private blankSquareTexture: PIXI.Texture = PIXI.Texture.EMPTY;
   private circleTexture: PIXI.Texture = PIXI.Texture.EMPTY;
   private circleScale: number = 1.0;
 
@@ -21,28 +21,27 @@ class BoardView {
   }
 
   public async init() {
-    const boxHeight = this.app.canvas.height / 3;
-    const boxWidth = this.app.canvas.width / 3;
+    const squareHeight = this.app.canvas.height / 3;
+    const squareWidth = this.app.canvas.width / 3;
 
-    const padding = Math.min(boxHeight, boxWidth) / 3;
-    const paddedBoxWidth = boxWidth - padding;
-    const paddedBoxHeight = boxHeight - padding;
+    const squarePadding = Math.min(squareHeight, squareWidth) / 3;
+    const paddedSquareWidth = squareWidth - squarePadding;
+    const paddedSquareHeight = squareHeight - squarePadding;
 
-    const boxGraphics = new PIXI.Graphics();
-    boxGraphics.rect(0, 0, boxWidth, boxHeight);
-    boxGraphics.stroke({ width: 3, color: 'white' });
-    this.boxTexture = this.app.renderer.generateTexture(boxGraphics);
+    const blankSquareGraphics = new PIXI.Graphics();
+    blankSquareGraphics.rect(0, 0, squareWidth, squareHeight);
+    blankSquareGraphics.stroke({ width: 3, color: 'white' });
+    this.blankSquareTexture = this.app.renderer.generateTexture(blankSquareGraphics);
 
     this.circleTexture = await PIXI.Assets.load('bunny.png');
-    const circleScaleWidth = paddedBoxWidth / this.circleTexture.width;
-    const circleScaleHeight = paddedBoxHeight / this.circleTexture.height;
+    const circleScaleWidth = paddedSquareWidth / this.circleTexture.width;
+    const circleScaleHeight = paddedSquareHeight / this.circleTexture.height;
     this.circleScale = Math.min(circleScaleWidth, circleScaleHeight);
 
     this.crossTexture = await PIXI.Assets.load('elk.png');
-    const crossScaleWidth = paddedBoxWidth / this.circleTexture.width;
-    const crossScaleHeight = paddedBoxHeight / this.circleTexture.height;
+    const crossScaleWidth = paddedSquareWidth / this.circleTexture.width;
+    const crossScaleHeight = paddedSquareHeight / this.circleTexture.height;
     this.crossScale = Math.min(crossScaleWidth, crossScaleHeight);
-
 
     const fill = new PIXI.FillGradient(0, 0, 0, 36 * 1.7 * 7);
     const colors = [0xffffff, 0x00ff99].map((color) => PIXI.Color.shared.setValue(color).toNumber());
@@ -78,11 +77,11 @@ class BoardView {
     for (let row = 0; row < 3; row++) {
       this.board[row] = [];
       for (let column = 0; column < 3; column++) {
-        const square = PIXI.Sprite.from(this.boxTexture);
+        const square = PIXI.Sprite.from(this.blankSquareTexture);
         this.board[row][column] = square;
 
         square.anchor.set(0.5);
-        square.position.set((0.5 + column) * boxWidth, (0.5 + row) * boxHeight);
+        square.position.set((0.5 + column) * squareWidth, (0.5 + row) * squareHeight);
 
         square.interactive = true;
         square.cursor = 'pointer';
@@ -115,7 +114,7 @@ class BoardView {
         this.board[row][column].setSize(this.circleTexture.width * this.circleScale, this.circleTexture.height * this.circleScale);
         break;
       default:
-        this.board[row][column].texture = this.boxTexture;
+        this.board[row][column].texture = this.blankSquareTexture;
         break;
     }
   }

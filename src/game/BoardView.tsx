@@ -21,24 +21,25 @@ class BoardView {
   }
 
   public async init() {
-    const squareHeight = this.app.canvas.height / 3;
-    const squareWidth = this.app.canvas.width / 3;
+    await this.preloadAssets();
 
+    const squareHeight = this.app.canvas.height / 3;
+
+    const squareWidth = this.app.canvas.width / 3;
     const squarePadding = Math.min(squareHeight, squareWidth) / 3;
     const paddedSquareWidth = squareWidth - squarePadding;
-    const paddedSquareHeight = squareHeight - squarePadding;
 
+    const paddedSquareHeight = squareHeight - squarePadding;
     const blankSquareGraphics = new PIXI.Graphics();
     blankSquareGraphics.rect(0, 0, squareWidth, squareHeight);
     blankSquareGraphics.stroke({ width: 3, color: 'white' });
+
     this.blankSquareTexture = this.app.renderer.generateTexture(blankSquareGraphics);
 
-    this.circleTexture = await PIXI.Assets.load('bunny.png');
     const circleScaleWidth = paddedSquareWidth / this.circleTexture.width;
     const circleScaleHeight = paddedSquareHeight / this.circleTexture.height;
     this.circleScale = Math.min(circleScaleWidth, circleScaleHeight);
 
-    this.crossTexture = await PIXI.Assets.load('elk.png');
     const crossScaleWidth = paddedSquareWidth / this.circleTexture.width;
     const crossScaleHeight = paddedSquareHeight / this.circleTexture.height;
     this.crossScale = Math.min(crossScaleWidth, crossScaleHeight);
@@ -95,6 +96,17 @@ class BoardView {
     }
   }
 
+  private async preloadAssets() {
+    const assets = [
+      { alias: 'X', src: 'bunny.png' },
+      { alias: 'O', src: 'elk.png' },
+    ];
+
+    await PIXI.Assets.load(assets);
+    this.circleTexture = await PIXI.Assets.load('bunny.png');
+    this.crossTexture = await PIXI.Assets.load('elk.png');
+  }
+
   public setGameOver(isGameOver: boolean) {
     if (isGameOver) {
       this.app.stage.addChild(this.gameOverSprite);
@@ -106,11 +118,11 @@ class BoardView {
   public setSymbolAt(symbol: string, row: number, column: number) {
     switch (symbol) {
       case 'X':
-        this.board[row][column].texture = this.crossTexture;
+        this.board[row][column].texture = PIXI.Texture.from('X')
         this.board[row][column].setSize(this.crossTexture.width * this.crossScale, this.crossTexture.height * this.crossScale);
         break;
       case 'O':
-        this.board[row][column].texture = this.circleTexture;
+        this.board[row][column].texture = PIXI.Texture.from('O')
         this.board[row][column].setSize(this.circleTexture.width * this.circleScale, this.circleTexture.height * this.circleScale);
         break;
       default:

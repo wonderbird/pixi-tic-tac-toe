@@ -2,7 +2,7 @@ import * as PIXI from 'pixi.js';
 import Presenter from "./Presenter";
 import PlayerSymbol from "./PlayerSymbol";
 
-class BoardSquare {
+class BoardSquareVisual {
   private app: PIXI.Application;
   private readonly blankSquareTexture: PIXI.Texture;
   private readonly square: PIXI.Sprite;
@@ -62,4 +62,4 @@ class BoardSquare {
   }
 }
 
-export default BoardSquare;
+export default BoardSquareVisual;

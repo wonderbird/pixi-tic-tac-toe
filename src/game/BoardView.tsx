@@ -1,14 +1,13 @@
 import * as PIXI from 'pixi.js';
 import Presenter from "./Presenter";
 import PlayerSymbol from "./PlayerSymbol";
+import BoardSquare from "./BoardSquare";
 
 class BoardView {
-  private board: PIXI.Sprite[][] = [];
+  private readonly presenter: Presenter;
 
-  private presenter: Presenter;
-
-  private app: PIXI.Application;
-  private blankSquareTexture: PIXI.Texture = PIXI.Texture.EMPTY;
+  private theBoard: BoardSquare[][] = [];
+  private readonly app: PIXI.Application;
   private gameOverSprite: PIXI.Text = new PIXI.Text();
 
   constructor(app: PIXI.Application) {
@@ -18,9 +17,8 @@ class BoardView {
 
   public async init() {
     await this.preloadAssets();
-    this.blankSquareTexture = this.createBlankSquareTexture();
     this.gameOverSprite = this.createGameOverSprite();
-    this.board = this.createBoard();
+    this.theBoard = this.createBoard();
   }
 
   private async preloadAssets() {
@@ -31,47 +29,17 @@ class BoardView {
 
     await PIXI.Assets.load(assets);
   }
-
-  private createBlankSquareTexture() {
-    const blankSquareGraphics = new PIXI.Graphics();
-    blankSquareGraphics.rect(0, 0, this.squareWidth(), this.squareHeight());
-    blankSquareGraphics.stroke({width: 3, color: 'white'});
-    return this.app.renderer.generateTexture(blankSquareGraphics);
-  }
-
   private createBoard() {
-    let board: PIXI.Sprite[][] = [];
+    let theBoard: BoardSquare[][] = [];
 
     for (let row = 0; row < 3; row++) {
-      board[row] = [];
+      theBoard[row] = [];
       for (let column = 0; column < 3; column++) {
-        const square = PIXI.Sprite.from(this.blankSquareTexture);
-        board[row][column] = square;
-
-        square.anchor.set(0.5);
-        square.position.set((0.5 + column) * this.squareWidth(), (0.5 + row) * this.squareHeight());
-
-        square.interactive = true;
-        square.cursor = 'pointer';
-
-        square.on('pointerdown', () => {
-          this.presenter.tapSquare(row, column);
-        });
-
-        this.app.stage.addChild(square);
+        theBoard[row][column] = new BoardSquare(this.app, this.presenter, row, column);
       }
     }
-    return board;
+    return theBoard;
   }
-
-  private squareHeight() {
-    return this.app.canvas.height / 3;
-  }
-
-  private squareWidth() {
-    return this.app.canvas.width / 3;
-  }
-
   private createGameOverSprite(): PIXI.Text {
     const fill = new PIXI.FillGradient(0, 0, 0, 36 * 1.7 * 7);
     const colors = [0xffffff, 0x00ff99].map((color) => PIXI.Color.shared.setValue(color).toNumber());
@@ -115,21 +83,7 @@ class BoardView {
   }
 
   public setSymbolAt(symbol: PlayerSymbol, row: number, column: number) {
-    if (symbol === PlayerSymbol.BLANK) {
-      this.board[row][column].texture = this.blankSquareTexture;
-    } else {
-      const texture = PIXI.Assets.get(symbol);
-
-      const squarePadding = Math.min(this.squareWidth(), this.squareHeight()) / 3;
-      const paddedSquareWidth = this.squareWidth() - squarePadding;
-      const paddedSquareHeight = this.squareHeight() - squarePadding;
-
-      const scaleWidth = paddedSquareWidth / texture.width;
-      const scaleHeight = paddedSquareHeight / texture.height;
-      const scale = Math.min(scaleWidth, scaleHeight);
-      this.board[row][column].texture = texture;
-      this.board[row][column].setSize(texture.width * scale, texture.height * scale);
-    }
+    this.theBoard[row][column].setSymbol(symbol);
   }
 }
 

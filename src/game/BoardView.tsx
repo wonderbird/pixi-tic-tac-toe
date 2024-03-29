@@ -17,38 +17,8 @@ class BoardView {
 
   public async init() {
     await this.preloadAssets();
-    this.createBlankSquareTexture();
-
-    const fill = new PIXI.FillGradient(0, 0, 0, 36 * 1.7 * 7);
-    const colors = [0xffffff, 0x00ff99].map((color) => PIXI.Color.shared.setValue(color).toNumber());
-
-    colors.forEach((number, index) =>
-    {
-      const ratio = index / colors.length;
-
-      fill.addColorStop(ratio, number);
-    });
-
-    const style = new PIXI.TextStyle({
-      fontFamily: 'Arial',
-      fontSize: 36,
-      fontStyle: 'italic',
-      fontWeight: 'bold',
-      fill: { fill },
-      stroke: { color: '#000000', width: 3, join: 'round' },
-      dropShadow: {
-        color: '#555555',
-        blur: 4,
-        angle: Math.PI / 6,
-        distance: 6,
-      },
-      wordWrap: true,
-      wordWrapWidth: 440,
-    });
-
-    this.gameOverSprite = new PIXI.Text({ text: 'Game Over', style });
-    this.gameOverSprite.anchor.set(0.5);
-    this.gameOverSprite.position.set(this.app.canvas.width / 2, this.app.canvas.height / 2);
+    this.blankSquareTexture = this.createBlankSquareTexture();
+    this.gameOverSprite = this.createGameOverSprite();
 
     for (let row = 0; row < 3; row++) {
       this.board[row] = [];
@@ -84,7 +54,7 @@ class BoardView {
     const blankSquareGraphics = new PIXI.Graphics();
     blankSquareGraphics.rect(0, 0, this.squareWidth(), this.squareHeight());
     blankSquareGraphics.stroke({width: 3, color: 'white'});
-    this.blankSquareTexture = this.app.renderer.generateTexture(blankSquareGraphics);
+    return this.app.renderer.generateTexture(blankSquareGraphics);
   }
 
   private squareHeight() {
@@ -93,6 +63,40 @@ class BoardView {
 
   private squareWidth() {
     return this.app.canvas.width / 3;
+  }
+
+  private createGameOverSprite(): PIXI.Text {
+    const fill = new PIXI.FillGradient(0, 0, 0, 36 * 1.7 * 7);
+    const colors = [0xffffff, 0x00ff99].map((color) => PIXI.Color.shared.setValue(color).toNumber());
+
+    colors.forEach((number, index) => {
+      const ratio = index / colors.length;
+
+      fill.addColorStop(ratio, number);
+    });
+
+    const style = new PIXI.TextStyle({
+      fontFamily: 'Arial',
+      fontSize: 36,
+      fontStyle: 'italic',
+      fontWeight: 'bold',
+      fill: {fill},
+      stroke: {color: '#000000', width: 3, join: 'round'},
+      dropShadow: {
+        color: '#555555',
+        blur: 4,
+        angle: Math.PI / 6,
+        distance: 6,
+      },
+      wordWrap: true,
+      wordWrapWidth: 440,
+    });
+
+    const gameOverSprite = new PIXI.Text({text: 'Game Over', style});
+    gameOverSprite.anchor.set(0.5);
+    gameOverSprite.position.set(this.app.canvas.width / 2, this.app.canvas.height / 2);
+
+    return gameOverSprite;
   }
 
   public setGameOver(isGameOver: boolean) {

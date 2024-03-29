@@ -33,15 +33,15 @@ class BoardView {
   }
 
   private createBoard() {
-    let theBoard: BoardSquareVisual[][] = [];
+    const board: BoardSquareVisual[][] = [];
 
     for (let row = 0; row < 3; row++) {
-      theBoard[row] = [];
+      board[row] = [];
       for (let column = 0; column < 3; column++) {
-        theBoard[row][column] = new BoardSquareVisual(this.app, this.presenter, row, column);
+        board[row][column] = new BoardSquareVisual(this.app, this.presenter, row, column);
       }
     }
-    return theBoard;
+    return board;
   }
 
   public setGameOver(isGameOver: boolean) {
